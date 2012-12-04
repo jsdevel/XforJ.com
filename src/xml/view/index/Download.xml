@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="default" xmlns:app="application">
+   <h3>Downloading</h3>
+   <p>XforJ is entirely open source, so you can download a binary distribution 
+   or the source code.</p>
+   <h4>License</h4>
+   <p>XforJ is licensed under the Apache 2.0 License.  By downloading or using anything
+   on this site, you agree to the terms of the&#160;<app:LICENSE/></p>
+   <h4>Binaries</h4>
+   <p>Coming soon...</p>
+   <h4>Source Code</h4>
+   <p>
+      The source code can be viewed on&#160;<app:GIT/>.
+   </p>
+</container>

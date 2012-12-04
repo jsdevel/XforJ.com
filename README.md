@@ -1,4 +1,4 @@
 XforJ.com
 =========
 
-The documentation site for XforJ
+The documentation site for XforJ.

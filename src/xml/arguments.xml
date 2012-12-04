@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2012 Joseph Spencer.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+
+<arguments 
+   antcallback="com.xforj.XforJ.startCompiling"
+   class="XforJ" 
+   copyright="2012 Joseph Spencer"
+   description="
+XforJ combines the elegance of javascript and the power of XSL elements to produce
+compiled javascript templates.  You compose templates in a hybird grammar and
+compile that down to javascript.\n
+
+Visit http://www.xforj.com for more info.
+"
+   example="java -jar XforJ.x.x.x.jar --input-file /my/template/file.html --output-directory /my/template/output.js"
+   indent="   " 
+   license="http://www.apache.org/licenses/LICENSE-2.0"
+   package="com.xforj.arguments" 
+   menulength="40"
+   terminal="true"
+   title="XforJ A Javascript Template Compiler"
+>
+   <argument 
+      name="--input-file" 
+      description="
+A pre-compiled XforJ template file.\n
+
+When --output-file is specified, this will be the target of your input file.\n
+
+When using ant, supplying destdir without outputfile as attributes will create a
+target file in the destination directory of the same name as the input file."
+      overwrite="true"
+      type="file"/>    
+
+   <argument
+      name="--output-file"
+      description="
+The file where the compiled template will be placed.\n
+This is ignored if --input-file isn't specified.
+"
+      overwrite="true"
+      type="file"
+      />
+
+   <antproperty
+      name="destdir"
+      description="
+The output directory for files given by --input-file, or inputfiles(ant).  Directory
+structure is copied from inputfiles."
+      type="directory"
+      />
+
+   <antproperty
+      name="srcdir"
+      description="
+The source directory for files found using inputfiles(ant).  This argument is required
+when using nested filesets, in order to preserve directory structure.
+"
+      type="directory"
+      />
+
+   <anttask
+      name="inputfiles"
+      description="
+The input files to compile.\n
+When using this option, you must provide both the destdir and srcdir attributes,
+or this task has no effect.\n
+Only FileSet elements are allowed.
+"
+      type="files"
+      />
+
+   <argument
+      name="--overwrite"
+      description="
+Whether or not files should be over-written.  If not specified, any 
+attempt to overwrite an existing file will be rejected, and a message displayed to
+the output.
+"
+      type="boolean"
+      />
+
+   <argument
+      name="--minify-html"
+      description="When enabled, space is removed before and after all '&lt;&gt;'."
+      default="true"
+      type="boolean"
+      />
+   
+   <argument
+      name="--global"
+      description="When enabled, all templates are assigned to the global object.  When disabled, a new object is returned from the entire XforJ program.  In this scenario, a mechanism such as eval must be used to capture the returned object to gain access to the defined templates."
+      default="true"
+      type="boolean"
+      />
+
+   <argument
+      name="--normalize-space"
+      description="Replace all white space with a single space ' '."
+      default="true"
+      type="boolean"
+      />
+
+   <argument
+      name="--debug"
+      description="Turns on debugging."
+      type="boolean"
+      />
+
+   <argument
+      name="--warn"
+      description="Turns on run time warnings."
+      type="boolean"
+      />
+
+   <argument
+      name="--remove-logs"
+      default="true"
+      description="Removes any log elements from compilation."
+      type="boolean"
+      />
+   <argument
+      name="--use-external"
+      default="false"
+      description="When enabled, the internal functions used by xforj output will not be included.  It is then
+necessary to load a seperate js library.  The library can be generated from the terminal by specifying: --create-library true."
+      type="boolean"
+      />
+   <argument
+      name="--output-library"
+      default="false"
+      description="
+Use this option to create the external XforJ library that is needed when specifying --use-external true.\n
+When this is enabled, XforJ will not perform any compiling.
+"
+      overwrite="false"
+      type="file"
+      />
+
+   <argument
+      name="--escape-xss"
+      default="true"
+      description="
+When enabled, the following sequences will be escaped:\n
+*)&amp;lt;/script\n
+*)&amp;lt;script\n
+*)onclick\n
+*)ondblclick\n
+*)onmousedown\n
+*)onmousemove\n
+*)onmouseover\n
+*)onmouseout\n
+*)onmouseup\n
+*)onkeydown\n
+*)onkeypress\n
+*)onkeyup\n
+*)onabort\n
+*)onerror\n
+*)onload\n
+*)onresize\n
+*)onscroll\n
+*)onunload\n
+*)onblur\n
+*)onchange\n
+*)onfocus\n
+*)onreset\n
+*)onselect\n
+*)onsubmit
+"
+      type="boolean"
+      />
+</arguments>

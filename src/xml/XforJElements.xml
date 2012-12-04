@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--Attributes to document:
+Program Namespace
+File Path
+Name
+Global Expression
+Variable Expression
+Context Selector
+-->
+
+<elements xmlns="xforj-elements">
+   <element name="namespace"> 
+      <description>
+         This element is required at the beginning of all XforJ template files.  It establishes
+         the location of any template defined within the file.  If the file is imported
+         by another template file, then that file may reference the templates in this
+         file by using the fully qualified name of the template I.E my.namespace.path.someTemplate().
+      </description>
+      <attributes>
+         <attribute type="ProgramNamespace">Program Namespace</attribute>
+      </attributes>
+      <note>
+         It isn't necessary to use the full namespace for templates
+         within the same file.
+      </note>
+      <usage>
+{namespace my.namespace.path}
+...
+      </usage>
+   </element>
+
+
+   <element name="import"> 
+      <description>
+         <container xmlns="default">
+            Used to import another template file.  The path may be relative or 
+            absolute.  All variables defined in the imported file are local to 
+            &#160;<i>that</i>&#160;file.  Import elements may appear after the namespace
+            declaration&#160;<i>but must</i>&#160;appear before all other elements.
+         </container>
+      </description>
+      <attributes>
+         <attribute type="FilePath">File Path</attribute>
+      </attributes>
+      <usage>
+{namespace my.namespace.path}
+
+{import ../some/path}
+
+...other elements...
+...
+      </usage>
+   </element>
+
+   <element name="var (global)"> 
+      <description>
+         <container xmlns="default">
+            Declares a variable that is global to the current template file.<br/><br/>
+            May appear after import statements, but&#160;<i>must</i>&#160;appear
+            before template elements.<br/><br/>
+            In this context, the value (given as the second attribute), may only
+            be a Global value (not a context value).<br/><br/>
+            This variable is referable once it has been defined.  Any attempt to 
+            reference it before it has been defined will result in a compile time 
+            failure.
+         </container>
+      </description>
+      <attributes>
+         <attribute type="Name">Name</attribute>
+         <attribute type="GlobalExpression" optional="">Global Expression</attribute>
+      </attributes>
+      <note>
+         In XSL, all variables defined outsite of a template are global.  Such is
+         not the case with XforJ.
+      </note>
+      <usage>
+{namespace my.namespace.path}
+
+{var name}
+{var name 5}
+
+...templates...
+...
+      </usage>
+   </element>
+
+   <element name="template"> 
+      <description>
+         <container xmlns="default">
+            Defines a template.  The first attribute is the name of the template.
+            The namespace of this template is defined at the top of the template file.<br/><br/>
+            All templates accept two objects as arguments when calling the template from javascript: context and parameters.  
+         </container>
+      </description>
+      <attributes>
+         <attribute type="Name">Name</attribute>
+      </attributes>
+      <usage>
+{namespace my.namespace.path}
+
+{template example1}
+{/template}
+
+{template example2}
+{/template}
+
+# You can define as many templates as you wish in a single file.
+
+# To call a template in javascript, do this:
+
+# my.namespace.path.example({context:"hello"});
+
+# and with parameters:
+
+# my.namespace.path.example({context:"hello"}, {param1:"wow", param2:"hey"});
+      </usage>
+   </element>
+
+   <element name="param (template)"> 
+      <description>
+         <container xmlns="default">
+            Defines a param that is local to the template body.<br/><br/>
+            Param elements must appear first in a template body.<br/><br/>
+            When given a value as the 2nd attribute, the value will be the default
+            value if no value exists in the parameters argument on execution of the
+            template.<br/><br/>
+            Params have full access to context, global variables, and parameters.
+         </container>
+      </description>
+      <attributes>
+         <attribute type="Name">Name</attribute>
+         <attribute type="VariableExpression" optional="">Variable Expression</attribute>
+      </attributes>
+      <usage>
+{namespace my.namespace.path}
+
+{template example}
+   {param param1 5}
+{/template}
+      </usage>
+   </element>
+
+   <element name="var (template)"> 
+      <description>
+         <container xmlns="default">
+            Defines a variable that is local to the template body.<br/><br/>
+            Similar to global variables, these variables may not be referenced until
+            defined.<br/><br/>
+            Variables have full access to context, variables, parameters, and global 
+            variables.
+         </container>
+      </description>
+      <attributes>
+         <attribute type="Name">Name</attribute>
+         <attribute type="VariableExpression" optional="">Variable Expression</attribute>
+      </attributes>
+      <usage>
+{namespace my.namespace.path}
+
+{template example}
+   {param param1 5}
+   {var var1 @param1}
+{/template}
+      </usage>
+   </element>
+   
+   <element name="text"> 
+      <description>
+         <container xmlns="default">
+            Provides greater control over white space being considered as an input token.<br/><br/>
+            Any text within a template leading up to any '{' is
+            treated as an input token.  This includes white space as well.<br/><br/>
+            Using the text element allows any previous white space to be ignored.
+         </container>
+      </description>
+      <usage>
+{namespace my.namespace.path}
+
+{template example}
+   {param param1 5}
+   {var var1 @param1}
+
+   The white space following this text will be sent to the output.
+
+   {text}But not this text!!{/text}
+{/template}
+      </usage>
+   </element>
+      
+   <element name="print statement"> 
+      <description>
+         <container xmlns="default">
+            Outputs the value of a Variable Expression.
+         </container>
+      </description>
+      <usage>
+{namespace my.namespace.path}
+
+{template example}
+   {param param1}
+   {var var1 @param1}
+
+   {'printing out a string'}
+
+   {@param1 || (@var1 || ('parenthesis are allowed'))}
+{/template}
+      </usage>
+   </element>
+   
+   <element name="log"> 
+      <description>
+         <container xmlns="default">
+            Provides a logging mechanism.  Currently, console.log is used behind the scenes.<br/><br/>
+            The 1st attribute is any allowable VariableExpression.
+         </container>
+      </description>
+      <attributes>
+         <attribute type="VariableExpression">Variable Expression</attribute>
+      </attributes>
+      <usage>
+         <container xmlns="default">
+{namespace my.namespace.path}
+
+{template example}
+   {log current().some.value.to.log}
+{/template}
+         </container>
+      </usage>
+   </element>        
+   
+   <element name="if"> 
+      <description>
+         <container xmlns="default">
+            If the attribute is considered "truthy", then the test succeeds.
+         </container>
+      </description>
+      <attributes>
+         <attribute type="VariableExpression">Variable Expression</attribute>
+      </attributes>
+      <usage>
+         <container xmlns="default">
+{namespace my.namespace.path}
+
+{template example}
+   {param param1}
+   {var var1 @param1}
+
+   <h1>Example if</h1>
+   {if @param1 == 5}
+      We did it!!
+   {/if}
+
+{/template}
+         </container>
+      </usage>
+   </element>
+            
+   <element name="choose"> 
+      <description>
+         <container xmlns="default">
+            Accepts any number of when statements, followed by an otherwise statement.<br/><br/>
+            This element is convereted to if...else if....else...
+         </container>
+      </description>
+      <usage>
+         <container xmlns="default">
+{namespace my.namespace.path}
+
+{template example}
+   {param param1}
+   {var var1 @param1}
+
+   <h1>Example choose</h1>
+   {choose}
+      {when @param1 == 5}
+         <p>First condition was a success!</p>
+      {/when}
+      {when @param1 == 6}
+         <p>Second condition was a success!</p>
+      {/when}
+      {otherwise}
+
+      {/otherwise}
+   {/choose}
+{/template}
+         </container>
+      </usage>
+   </element>
+               
+   <element name="when"> 
+      <description>
+         <container xmlns="default">
+            Executes if the 1st attribute equates to a "truthy" value.<br/><br/>
+            Only allowed to appear within a choose statement.<br/><br/>
+            Any number of when statements may appear first whithin a choose statement.<br/><br/>
+            See choose for usage.
+         </container>
+      </description>
+      <attributes>
+         <attribute type="VariableExpression">Variable Expression</attribute>
+      </attributes>
+   </element>               
+
+   <element name="otherwise"> 
+      <description>
+         <container xmlns="default">
+            Executes if the previous when statements fail in a choose statement.<br/><br/>
+            Only allowed to appear within a choose statement.<br/><br/>
+            Must appear after any when statement.<br/><br/>
+            Only one otherwise statement is allowed in a choose statement.<br/><br/>
+            See choose for usage.
+         </container>
+      </description>
+   </element>               
+              
+   <element name="foreach"> 
+      <description>
+         Used to iterate over an object or array.<br/><br/>
+         This statement begins a new variable scope, so it is acceptable to define
+         new variables within the body.<br/><br/>
+         The value of the attribute sets a new context for the new scope.
+      </description>
+      <attributes>
+         <attribute type="ContextSelector">Context Selector</attribute>
+      </attributes>
+      <usage>
+         <container xmlns="default">
+{namespace my.namespace.path}
+
+{template example}
+   {param param1}
+   {var var1 @param1}
+
+   <h1>Example choose</h1>
+   <ul>
+      {foreach players}
+         <li>{current()}</li>
+      {/foreach}
+   </ul>
+{/template}
+         </container>
+      </usage>
+   </element>
+               
+   <element name="sort"> 
+      <description>
+         <container xmlns="default">
+            Used to sort the context object used in a foreach.<br/><br/>
+            Allowable as the first and only element of it's kind inside a foreach.<br/><br/>
+            The 2nd attribute describes the sort algorithm to use.  By default, values are 
+            sorted in ascending order.<br/><br/>
+            Acceptable values are: asc, desc.<br/><br/>
+            Flags may be used to add further sorting:<br/><br/>
+            <ul>
+               <li>i&#160;&#160;= case insensitive</li>
+               <li>n = bubble numbers</li>
+            </ul>
+         </container>
+      </description>
+      <attributes>
+         <attribute type="ContextSelector">Context Selector</attribute>
+         <attribute type="SortAlgorithm" optional="">Sort Algorithm</attribute>
+      </attributes>
+      <usage>
+         <container xmlns="default">
+{namespace my.namespace.path}
+
+{template example}
+   {param param1}
+   {var var1 @param1}
+
+   <h1>Example choose</h1>
+   <ul>
+      {foreach players}
+         {sort games.hits.average asc|n}
+         <li>{current()}</li>
+      {/foreach}
+   </ul>
+{/template}
+         </container>
+      </usage>
+   </element>
+               
+   <element name="call"> 
+      <description>
+         <container xmlns="default">
+            Calls another template.<br/><br/>
+            If the 1st attribute is a name only, then a template within the current
+            namespace is called.  Otherwise a template within the referenced namespace
+            is called.<br/><br/>
+         </container>
+      </description>
+      <attributes>
+         <attribute type="ContextSelector" optional="">Context Selector</attribute>
+      </attributes>
+      <usage>
+{namespace my.namespace.path}
+
+{template example}
+   {call example2/}
+{/template}
+
+{template example2}
+   I'm called!
+{/template}
+      </usage>
+   </element>
+
+   <element name="param (call)"> 
+      <description>
+         Passes a param to the called template.  The same rules apply for template
+         paramaters.
+      </description>
+      <attributes>
+         <attribute type="Name">Name</attribute>
+         <attribute type="VariableExpression" optional="">Variable Expression</attribute>
+      </attributes>
+      <usage>
+{namespace my.namespace.path}
+
+{template example}
+   {call example2}
+      {param param1 5}
+   {/call}
+{/template}
+
+{template example2}
+   {param param1}
+
+   {if @param1 == 5}
+      It works!!
+   {/if}
+{/template}
+      </usage>
+   </element>
+
+</elements>

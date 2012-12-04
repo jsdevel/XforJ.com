@@ -1,0 +1,184 @@
+Beginning
+In this demo I  would like to show you how easy it is to incorporate XforJ into your project.  It is assumed in the course of this demo that you have experience coding in javascript.
+
+Environment
+XforJ requires that you have a Java Runtime Environment installed in the system where you will be building template files. If you're going to be using Apache ANT to build your project you will also need ANT installed on your system. 
+
+ 
+Composing
+XforJ files end with a .xforj extension.  For this I'll create a file named demo.xforj
+
+[<<<create file>>>]
+
+XforJ will raise compile time warnings and errors as it parses your file if it encounters invalid / incomplete syntax.  As demo.xforj stands right now, 
+
+[<<<attempt to compile file>>>] 
+
+any attempt to compile it will fail because it is missing a namespace declaration.  We’ll add that in a moment, but it is important to know that certain rules are enforced when compiling.  For a detailed explanation of what is allowed, you can refer to the BNF on the XforJ github repository page and the documentation at http://xforj.com.
+
+Now that I have my file created, the first thing I need to do is define a namespace. 
+
+[<<<type namespace demo>>>]  
+
+This namespace will allow me to reference the templates I define herein.  I'll call my namespace 'demo'.  Namespaces can be any length, I could have named it 'live.demo', 
+
+[<<<type live.demo>>>] 
+
+but for brevity I'll call it demo. 
+
+[<<<remove live. from the namespace>>>]
+
+The next step is to define import statements and Variables that we want shared between this file's templates.  These are optional.  For this demo, I'll define a few variables outside of some templates, we call these Globals, and they are only accessible to the templates defined within the file they belong to.  
+
+[<<<create variable demo1>>>]
+[<<<create variable demo2>>>]
+
+These variables have now been declared, and their names are demo1 and demo2.  VariableNames follow the same naming conventions defined by ECMAScript.  Namely, they may start with $_a-zA-Z, and may end with any number of $_a-zA-Z0-9.
+
+All variables in XforJ use javascript expressions as values with some restrictions.
+
+Global variable values allow the following javascript types:
+
+	String
+	Null
+	Number
+	Boolean
+
+[<<<add value ‘string’ to demo1>>>]
+[<<<add value null to demo2>>>]
+[<<<create variable demo3 with value 53>>>]
+[<<<create variable demo4 with value true>>>]
+
+Global variable values allow the following XforJ types:
+
+	VariableReference
+
+[<<<create variable demo5 with value @demo4>>>]
+
+Any VariableReference must procede a VariableDeclaration with the referenced name, otherwise a compile time error will be thrown.
+
+All variables, global and local, allow the usage of the following operators inside expressions:
+	unary !
+	bitwise ~
+	unary typeof
+	+
+	-
+	*
+	/
+	%
+	||
+	&&
+	==
+	===
+	!=
+	!===
+	<=
+	>=
+	<
+	>
+
+This list is not exhaustive, and is subject to change.  Consult the documentation for the current operators.
+
+Here is an example of an expression as a value:
+
+[<<<change demo1 value to ‘string’ && ‘string1‘>>>]
+
+In this example, the value of demo1 will be ‘string1’ as ECMAScript shortcircuiting now applies.
+	
+
+OK, I have a few variables defined, now I'll define some templates.  Templates begin with the template keyword, followed by a template name.
+
+[<<<create template one>>>]
+
+You may define as many templates as you like within an XforJ file.  When you call a template from outside your file, you prepend the file’s namespace to the template name.  
+
+[<<<go to chrome console and type demo.one()>>>]
+
+This fails because we haven’t included our file.  For the purpose of this demo, I’ll compile the file via the terminal and paste the contents into the console.
+
+[<<<compile file and copy contents to console>>>]
+
+Now the template executes, but nothing is output because we haven’t authored any content inside the template.  We can change this by adding some Input Tokens.  
+
+[<<<type ‘<h2>Your account number is: </h2>’ inside the template>>>]
+
+Input Tokens are any character other than the following:
+
+[<<<type these>>>]
+	#
+	{
+	\
+
+To use these characters as input tokens, you must escape them with ‘\’.  Failure to escape these characters as Input Tokens will result in a compile time error.
+
+It is worth noting now that comments in XforJ begin with the pound symbol and end with a new line character, hence the need to escape pound symbols when outputting them with Input Tokens.
+
+[<<<Type the following comment about the template
+#Here is a comment
+>>>]
+
+Templates become methods that take two parameters in the following order: 
+
+	context
+	parameters
+
+These are optional.
+
+Let’s pass a context object to this template to make this example more useful.
+
+[<<<add the following object as the first argument in chrome console:>>>]
+[<<<{account:{number:5,holder:”James”}}>>>]
+[<<<hit enter>>>]
+
+To output values from the context, we need a print statement.
+
+[<<<type {account.number} inside the template>>>]
+[<<<compile the template and paste the contents into the console again>>>]
+[<<<call the method again>>>]
+
+You can see that we now see the account number in the output.
+
+Normally in javascript we would need to short-circuit the account.number statement to prevent exceptions.  XforJ executes print statements inside a try block, so if the referenced property of the context object does not exist, XforJ will simply output nothing.
+
+Print statement values are any value allowed as a local variable value.  Local variable values allow the following:
+
+	Global variable values
+	Context Selectors
+	certain functions (see documentation)
+
+Context selectors look like normal Javascript property accessors, or refinements.
+
+[<<<type the following examples:
+{account.number}
+{account[‘number’]}
+>>>]
+
+In the second example we used a string for dynamic refinement, we could’ve used any local variable value or expression.
+
+It is important to note, that when compiling in the default mode of html, the result of context selector will be html escaped to reduce the risk of Cross Site Scripting attacks in your code.  Consult the documentation for more information on what values are escaped.  There is no guarantee that all attacks will be prevented, as it is almost impossible to completely protect your app from XSS attacks.  There is a lot that depends on the way you code, and whether or not security is part of your mindset.  You can also google ‘OWASP XSS’ to study these types of attacks and learn about what to do and what not to do in your code.
+
+Now that we’ve seen how to access the context object, we should look at parameters.
+
+Parameters must be declared before they can be accessed.
+
+[<<<type {param showAccountNumber}>>>]
+
+Parameters are allowed to appear as the initial children of a template.  They may reference previously defined params or global variables.  In addition, you may provide for default values, in the event that there is no defined incoming param value given to your template with the same name.
+
+[<<<add value true for showAccountNumber>>>]
+
+You reference params the same way you would any other variable.  All parameters and local variables must appear at the top of a template.
+
+When we call the template, we pass a second object containing the params.
+
+[<<<add the following object as a second argument in the console:
+{showAccountNumber:false}
+>>>]
+
+Let's use this value inside an if statement.
+
+If statements begin with the keyword if followed by a variable expression.  For this example, we only need to reference the showAccountNumber param, to decide if we should display the account number.
+
+[<<<Surround the InputTokens with an if statement, referencing @showAccountNumber>>>]
+
+

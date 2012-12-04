@@ -1,0 +1,64 @@
+{namespace site.examples.ant}
+
+{template showExampleBuildFile}
+   {call elementTag current()/}
+{/template}
+
+{template elementTag}
+   {param isClosing}
+   {param count 0}
+   {param indent ''}
+   {param previousIndent @indent}
+
+   {choose}
+      {when @isClosing}
+         {@previousIndent}
+         <span class="element-lt">&lt;/</span>
+            <span class="element-name">{name}</span>
+         <span class="element-gt">&gt;</span><br/>
+      {/when}
+      {otherwise}
+         {@previousIndent}
+
+         <span class="element-lt">&lt;</span>
+         <span class="element-name">
+            {name}
+            {if attributes}&\#32;{/if}
+         </span>
+         {if count(attributes) > 0}
+            {foreach attributes}
+               <span class="attribute-name">{name()}</span>
+               <span class="attribute-assignment">=</span>
+               <span class="attribute-value">"{current()}"{if position()!=last()}&\#32;{/if}</span>
+            {/foreach}
+         {/if}
+         {choose}
+            {when count(elements) > 0}
+               <span class="element-gt">&gt;</span>
+               <br/>
+               {foreach elements}
+                  {var text current().elements[0]}
+                  {choose}
+                     {when '#text' == current().name}
+                        <span class="element-text">{current().elements[0]}</span>
+                     {/when}
+                     {otherwise}
+                        {call elementTag current()}
+                           {param indent "&nbsp;&nbsp;&nbsp;"}
+                           {param previousIndent @previousIndent + @indent}
+                        {/call}
+                     {/otherwise}
+                  {/choose}
+               {/foreach}
+               {call elementTag current()}
+                  {param isClosing true}
+                  {param previousIndent @previousIndent}
+               {/call}
+            {/when}
+            {otherwise}
+               <span class="element-gt">/&gt;</span><br/>
+            {/otherwise}
+         {/choose}
+      {/otherwise}
+   {/choose}
+{/template}

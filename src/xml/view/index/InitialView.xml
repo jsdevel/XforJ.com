@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<container xmlns="default">
+   <h3>Why XforJ?</h3>
+   <p>
+      XforJ is a compiler written in java that allows you to create powerful
+      Javascript Templates.  Javascript Templates allow you to seperate the View 
+      from your app's Model or Data.
+   </p>
+
+   <p><i>"XforJ is to JSON what XSL is to XML."</i></p>
+
+   <div class="half">
+      <h4>Notable Features</h4>
+      <ul>
+         <li>Context based Templates</li>
+         <li>Parameters and Variables</li>
+         <li>Looping over data</li>
+         <li>Sorting within loops</li>
+         <li>Runnable from terminal, or ant.</li>
+         <li>Open Source</li>
+         <li>Documented</li>
+         <li>Supported</li>
+         <li>Tested</li>
+         <li>Fast!!!</li>
+      </ul>
+   </div>
+
+   <!--<div class="half">
+      <h4>Live Demo</h4>
+      <video width="300" height="300" controls="controls">
+         <source src="@/media/videos/demo.mp4" type="video/mp4"/>
+         <source src="@/media/videos/demo.ogg" type="video/ogg"/>
+      </video>
+   </div>-->
+
+   <h4>History</h4>
+    <p>
+      XforJ was born out of my need for powerful javascript templates.
+      I spent some time looking at other options, but they all fell
+      short of what I was accustomed to using XSL with XML.  I wanted that same
+      power in XSL using javascript, hence the name XforJ.</p>
+  
+
+   <h4>Comments</h4>
+   <div id="disqus_thread"></div>
+   <noscript>
+      Please enable JavaScript to view the 
+      <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+   </noscript>
+</container>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="XforJ" default="default" basedir=".">
+   <description>Sample build.xml file for XforJ</description>
+
+   <property name="build.dir" value="${basedir}/build"/>
+   <property name="build.js.dir" value="${build.dir}/js"/>
+   <property name="build.xforj.dir" value="${build.js.dir}/xforj"/>
+   <property name="xforj.dir" value="${basedir}/xforj"/>
+
+   <taskdef 
+      name="XforJ" 
+      classname="com.xforj.arguments.XforJTask"
+      classpath="${basedir}/jars/XforJ.1.0.0.jar"
+      />
+
+   <target name="default">
+      <XforJ
+         destdir="${build.xforj.dir}"
+         escapexss="false"
+         srcdir="${xforj.dir}"
+         overwrite="true"
+      >
+         <fileset dir="${xforj.dir}" includes="**/*.xforj"/>
+      </XforJ>
+   </target>
+</project>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="default">
+   <h3>Attributes</h3>
+   <p>Unlike XSL and other Template engines, XforJ has no notion of a named attribute.
+   Attributes take on special meaning based on where they appear on an element.</p>
+   <p>Observe the following&#160;<code>sort</code>&#160;statement:</p>
+   <pre>
+{foreach workers}
+   {sort children.name asc|in}
+      ...
+{/foreach}
+   </pre>
+   <p>In the previous example, <code>children.name</code> was a context selector, as well
+   as&#160;<code>workers</code>&#160;based on where they were.  The&#160;<code>asc|in</code>
+   &#160;was an algorithm for the&#160;<code>sort</code>&#160; element.</p>
+
+
+   <h4>Values</h4>
+   <p>The most frequest attribute in the grammar is &#160;<code>value</code>&#160;.
+   The following are allowable values for a value attribute:</p>
+   <ol>
+      <li>Variable reference.  Variable references begin with the <code>@</code> symbol. They
+      must procede their accompanying&#160;<code>var</code>&#160;declaration or a compile time 
+      error will be thrown.</li>
+      <li>String&#160;<code>'I\'m a string'</code>&#160;&#160;<code>"So am I!"</code></li>
+      <li>Number</li>
+      <li>Boolean. &#160;<code>true</code>&#160;or&#160;<code>false</code></li>
+      <li>null</li>
+   </ol>
+
+
+   <h4>Context Selector</h4>
+   <p>Context selectors are used to extract properties from the current context object.  In the&#160;
+   <code>sort</code>&#160;example above, you saw that&#160;<code>children.name</code>&#160; was
+   used to sort the workers.  Here are some examples of valid Context Selectors:</p>
+   <ol>
+      <li><code>children["name"].length</code></li>
+      <li><code>parents.mom.parents.hobbies[@some || 9]</code></li>
+   </ol>
+   <p>In the second example, we used dynamic refinement to select a different hobby
+   based on the value of the @some variable.</p>
+   <p>The following are some other useful context selectors:</p>
+   <ol>
+      <li><code>count(selector)</code>&#160;Returns the number of items designated
+      by the selector processed.</li>
+      <li><code>current()</code>&#160;Returns the current context object being
+      processed.</li>
+      <li><code>last()</code>&#160;Used in a&#160;<code>foreach</code>&#160; to
+      return the number of items to be processed in the current iteration.</li>
+      <li><code>name()</code>&#160;Used in a&#160;<code>foreach</code>&#160; to 
+      extract the name of the current context object.  Note that for array objects,
+      this will be an integer, and for regular objects it will be a string.</li>
+      <li><code>position()</code>&#160;Used in a&#160;<code>foreach</code>&#160; to
+      return the current index in the looped iteration.</li>
+   </ol>
+</container>

@@ -1,0 +1,110 @@
+.slides {
+   position: relative;
+}
+.slides > .slides-controls {
+   display: block !important;
+   position: absolute;
+   top: 0;
+   right: 0;
+}
+.slides > .slides-controls .slide-group {
+   border: 1px solid #e7e7e7;
+   padding: 10px;
+   margin-bottom: 10px;
+   margin-top: 10px;
+}
+.slides > .slides-controls .slide-group .header {
+   color: #4D90FE;
+   margin-bottom: 10px;   
+   text-align: left;
+}
+.slides > .slides-controls .button {
+   text-decoration: none;
+   width:150px;
+}
+
+.slides > div {
+   display:none;
+}
+.slides > div.showing {
+   display:block;
+}
+
+/*layout*/
+body > .slides {
+   margin:auto;
+   width: 95%;
+}
+.slides > div {
+   margin-right:180px;   
+}
+.slides > .slides-controls {
+   margin-right:0;   
+   text-align: center;
+   top:10px;
+   width:170px;
+}
+
+#Run {
+   margin-bottom:10px;
+   margin-right:30px;
+   padding: 2px;
+   padding-left: 10px;
+   padding-right:10px;
+}
+#Code,
+#Input,
+#Output {
+   display:inline-block;
+   vertical-align: top;
+}
+#Input,
+#Output {
+   width:50%;
+}
+
+#Code {
+   min-height: 400px;
+   width: 90%;
+}
+#Output h1 {
+   margin-bottom:5px;
+}
+#Output h2 {
+   margin:0;
+}
+.element-list {
+   margin-bottom: 30px;
+   width:100%;
+}
+.element-list td:first-child {
+   width: 95px;
+}
+
+#ExampleAntFile {
+   background-color: #FFFFE6;
+   font-family: monospace;
+   font-size:13px;
+   padding: 20px;
+}
+
+.element-lt,
+.element-gt,
+.element-name,
+.attribute-assignment,
+.attribute-value,
+.attribute-name,
+.element-text {
+
+}
+.element-lt,
+.element-gt,
+.element-name {
+   color: blue;
+}
+.attribute-name {
+   color: green;
+}
+.attribute-value {
+   color: red;
+}

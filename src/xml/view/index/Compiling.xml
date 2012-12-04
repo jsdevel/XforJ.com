@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="default">
+   <h3>Compiling Templates</h3>
+
+   <p>There are two methods to compile XforJ template files:</p>
+   <ol>
+      <li><a href="#Compiling_Ant">Ant</a></li>
+      <li><a href="#Compiling_Terminal">Terminal</a></li>
+   </ol>
+
+   <div id="Compiling_Ant">
+      <h4>Ant Compiling</h4>
+      <p>When compilng with ant, all of the arguments listed in the Terminal section
+      are available as attributes to the ant task.  When using arguments from the 
+      Terminal section, you must remove the "-" characters in the attribute names.</p>
+      <p>Before you being using the Ant method, you need to do a few things:</p>
+      <ul>
+         <li>Place your copy of XforJ.jar in Ant's classpath.</li>
+         <li>Define the XforJ task in your build.xml file.</li>
+      </ul>
+      <p>Here is an example of how to both define the XforJ ant task and use it in
+      a build.xml file:</p>
+      <div class="border-5 rounded shadow-5 inset" id="ExampleAntFile">
+         <!-- filled out with a js template. -->
+      </div>
+
+      <h5>Ant Attributes</h5>
+      <document href="arguments.xml" mode="b"/>
+      <h5>Ant Nested Tasks</h5>
+      <document href="arguments.xml" mode="c"/>
+   </div>
+
+   <div id="Compiling_Terminal">
+      <h4>Terminal Compiling</h4>
+      <p>You can compile a single file at a time from the terminal.  For this reason alone,
+      it is recommended that you use the Ant method.</p>
+      <p>To see the help menu from the terminal, simply run:&#160;<code>java -jar XforJ.jar</code>&#160;with no
+      arguments.</p>
+      <p>The following are the allowed arguments when running XforJ from the Terminal.</p>
+      <document href="arguments.xml" mode="a"/>
+   </div>
+
+</container>

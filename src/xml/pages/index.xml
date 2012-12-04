@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page title="XforJ" xmlns="default">
+   <css>
+      <url>/pages/index.css</url>
+   </css>
+
+   <slides controls="true" xmlns="js-slides" xmlns:d="default">
+      <slide name="Why_XforJ" speed="300">
+         <d:view href="index/InitialView.xml"/>
+         <d:script type="text/javascript">
+            var disqus_shortname = 'xforj';
+
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+         </d:script>
+
+      </slide>
+      <slideGroup name="Sample_Template">
+         <slide name="Precompiled">
+            <d:view href="index/Precompiled.xml"/>
+         </slide>
+         <slide name="Compiled">
+            <d:view href="index/Compiled.xml"/>
+         </slide>
+         <slide name="Try_Me">
+            <d:view href="index/TryMe.xml"/>
+            <d:script src="@/pages/index.js"></d:script>
+            <d:script src="@/xforj/test.js"></d:script>
+         </slide>
+      </slideGroup>
+      <slideGroup name="Documentation">
+         <slide name="Concepts">
+            <d:view href="index/Concepts.xml"/>
+         </slide>
+         <slide name="Elements">
+            <d:view href="index/Elements.xml"/>
+         </slide>
+         <slide name="Attributes">
+            <d:view href="index/Attributes.xml"/>
+         </slide>
+         <slide name="Compiling">
+            <container xmlns="default">
+               <view href="index/Compiling.xml"/>
+               <script src="@/xforj/BuildXMLExample.js"></script>
+               <script>
+                  (function(){var b=+new Date();var a=<document href="../misc/sample_files/build.xml" mode="c"/>;
+                  $('#ExampleAntFile').html(site.examples.ant.elementTag(a));if(window.console)console.log(+new Date()-b);
+                  })();
+               </script>
+            </container>
+         </slide>
+      </slideGroup>
+
+      <slide name="Download">
+         <d:view href="index/Download.xml"/>
+      </slide>
+   </slides>
+    
+</page>

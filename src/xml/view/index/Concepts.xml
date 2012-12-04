@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="default" xmlns:app="application">
+   <h3>Core Concepts</h3>
+   <p>While using XforJ is really easy once you get started, there are a few things
+   that you need to be aware of before starting.</p>
+
+   <h4>Workflow</h4>
+
+   <p>When working with XforJ template files, the general workflow is this:</p>
+
+   <ol>
+      <li>Compose</li>
+      <li>Compile</li>
+      <li>Include</li>
+   </ol>
+
+
+   <h4>Composing</h4>
+
+   <p>XforJ is a hybird grammar between javascript and XSL.  It borrows from their
+   strengths, and tries to eliminate their weeknesses.</p>
+
+   <p>The main weekness of XSL is verbosity.  There are scores of developers out there
+   who simply do not want to use it for this reason alone.  To avoid verbosity,
+   XforJ uses whitespace in strategic places to avoid duplication.  Such places
+   are attribute and element declarations.</p>
+
+   <p>The main weekness of javascript when building templates by hand is complexity
+   and escaping string data.  XforJ combats this with simplicity and built in escaping
+   for string data.</p>
+
+   <p>To fully understand what is allowed in the XforJ grammar, it is recommended
+   that you read the &#160;<app:BNF/>&#160;
+   hosted on github.</p>
+
+   <h4>Compiling</h4>
+
+   <p>XforJ is a compiler, and it needs to compile files before you can use the output.
+   There are two ways to do this:</p>
+   <ol>
+      <li>Running XforJ from the Command Line</li>
+      <li>Including XforJ in an ant project (preferred)</li>
+   </ol>
+   <p>See Compiling in the Documentation for more details.</p>
+
+   <h4>Including</h4>
+
+   <p>XforJ produces javascript that is compatible with any ECMAScript implementation.
+   It is possible to run compiled files in a server setting such as node.js, or
+   a web browser.  It is up to you to decide how you will include compiled files based
+   on your environment.</p>
+
+   <p>By default, XforJ assigns all templates to the global object.  This behavior
+   can be modified during compile time to only return an object from the file.  In 
+   this case, you would need to eval the contents of the file in order to capture 
+   the returned object for assignment.</p>
+
+   <p>Eval isn't entirely bad, when used appropriately.  Observe the following javascript
+   that contains a "safe" eval statement:</p>
+   <pre>
+var a=5;
+function safeEval(code){
+   return eval(code);
+}
+function test(){
+   var a=6;
+   return safeEval("a");
+}
+test();//returns 5
+   </pre>
+
+   <p>In a browser setting, we can load templates via AJAX and make them completely
+   private using the above technique.  Try running this snippet in chrome to see
+   what happens:</p>
+
+   <pre>
+(function(){//begin closure for our help functions
+   function safeEval(code){
+      return eval(code);
+   }
+   (function(){//begin closure for our app
+      var templateFiles;
+      var templateToLoad = '/js/test.js';
+
+      console.log("Loading template: "+templateToLoad);
+      $.ajax({
+         url:templateToLoad,
+         dataType:'text',
+         success:function(text){
+            templateFiles = safeEval(text);
+            console.log(templateFiles);
+         }
+      });
+   })();
+})();
+   </pre>
+
+   <br/>
+   <br/>
+   <br/>
+   <br/>
+
+</container>

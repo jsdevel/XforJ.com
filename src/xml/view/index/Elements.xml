@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="default" xmlns:app="application">
+   <h3>XforJ Elements</h3>
+   <h4>Placement</h4>
+   <p>In some cases, where you put elements matters, and XforJ will refuse to compile
+   if elements are found in the wrong location. The best way to get familiar with this 
+   placement is to study the&#160;<app:BNF/>.</p>
+   <p>Attributes are given in the order that they may appear.</p>
+   <p>Here is a high level overview of element restrictions at the file level:</p>
+   <ol>
+      <li><code>namespace</code>&#160;must appear first in the file (before any whitespace).</li>
+      <li><code>import</code>&#160;statements may appear after the <code>namespace</code> and before
+      any <code>var</code>&#160;declarations.</li>
+      <li><code>var</code>&#160;declarations may appear after <code>import</code> and before
+      <code>template</code> declarations.</li>
+      <li>
+         <code>template</code>&#160;may appear any number of times after 
+         <code>var</code> declarations.
+      </li>
+   </ol>
+   <h4>Element Reference</h4>
+   <document href="XforJElements.xml"/>
+</container>

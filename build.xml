@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="XforJ" default="default" basedir=".">
+   <description>Sample build.xml file for XforJ</description>
+
+   <!-- BUILD -->
+   <property name="build.dir" value="${basedir}/build"/>
+   <property name="src.dir" value="${basedir}/src"/>
+   <property name="css.build.dir" value="${build.dir}/css"/>
+   <property name="js.build.dir" value="${build.dir}/js"/>
+   <property name="xforj.build.dir" value="${js.build.dir}/xforj"/>
+
+   <!-- SRC -->
+   <property name="css.dir" value="${src.dir}/css"/>
+   <property name="jars.dir" value="${src.dir}/jars"/>
+   <property name="js.dir" value="${src.dir}/js"/>
+   <property name="xforj.dir" value="${src.dir}/xforj"/>
+   <property name="xml.dir" value="${src.dir}/xml"/>
+   <property name="xsl.dir" value="${src.dir}/xsl"/>
+
+   <!-- you must place the XforJ.jar in your classpath. -->
+   <taskdef 
+      name="XforJ" 
+      classname="com.xforj.arguments.XforJTask"
+      classpath="${jars.dir}/XforJ.1.0.0.jar"
+      />
+
+   <target name="default" depends="buildAll"/>
+
+   <target name="buildAll" depends="buildXforJFiles, buildHTMLPages, buildCSSFiles, buildJSFiles"/>
+
+   <target name="buildXforJFiles" depends="cleanXforJFiles">
+      <!-- build the global template -->
+      <XforJ
+         destdir="${xforj.build.dir}"
+         escapexss="false"
+         srcdir="${xforj.dir}"
+         overwrite="true"
+      >
+         <fileset dir="${xforj.dir}" includes="**/*.xforj"/>
+      </XforJ>
+   </target>
+
+   <!--
+      Specify -Dparam.basedir=/local/path/to/build for dev environments.
+   -->
+   <target name="buildHTMLPages" depends="cleanHTMLPages">
+      <condition property="param.basedir" value="/">
+         <not>
+            <isset property="param.basedir"/>
+         </not>
+      </condition>
+
+      <apply executable="java" verbose="yes">
+         <arg value="-jar"/>
+         <arg value="${jars.dir}/saxon.jar"/>
+         <arg value="-o"/>
+         <targetfile/>
+         <srcfile/>
+         <arg value="${xsl.dir}/HTML5.xsl"/>
+         <arg value="basedir=${param.basedir}"/>
+         <fileset dir="${xml.dir}/pages" includes="**/*.xml"/>
+         <mapper from="*.xml" to="${build.dir}/*.html" type="glob"/>
+      </apply>
+   </target>
+
+   <target name="buildCSSFiles" depends="cleanCSSFiles">
+      <copy todir="${css.build.dir}">
+         <fileset dir="${css.dir}" includes="**/*.css"/>
+      </copy>
+   </target>
+
+   <target name="buildJSFiles" depends="cleanJSFiles">
+      <copy todir="${js.build.dir}">
+         <fileset dir="${js.dir}" includes="**/*.js"/>
+      </copy>
+   </target>
+
+   
+   <!--=================================================
+                     CLEAN
+   ==================================================-->
+   <target name="cleanXforJFiles">
+      <delete quiet="yes">
+         <fileset dir="${xforj.build.dir}" includes="**/*.js"/>
+      </delete>
+   </target>
+
+   <target name="cleanHTMLPages">
+      <delete quiet="yes">
+         <fileset dir="${build.dir}" includes="**/*.html"/>
+      </delete>
+   </target>
+
+   <target name="cleanCSSFiles">
+      <delete quiet="yes">
+         <fileset dir="${css.build.dir}" includes="**/*.css"/>
+      </delete>
+   </target>
+
+   <target name="cleanJSFiles">
+      <delete quiet="yes">
+         <fileset dir="${js.build.dir}" includes="**/*.js" excludes="**/xforj/**"/>
+      </delete>
+   </target>
+
+</project>

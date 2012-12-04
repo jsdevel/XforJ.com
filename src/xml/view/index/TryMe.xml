@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="default">
+   <div id="Input">
+      <h3>Testing .... 123</h3>
+      <div>
+
+         <span class="button border-2 rounded" id="Run" onclick="a=+new Date();document.getElementById('Output').innerHTML=eval('(function(){return '+document.getElementById('Code').value+'})()');document.getElementById('Time').innerHTML=' '+(+new Date()-a)+'ms'">Run</span>
+
+         <span>Time to run: <strong id="Time">&#160;&#160;NaN</strong></span>
+      </div>
+      <textarea class="border-2 rounded" id="Code"></textarea>
+   </div>
+   <span id="Output"></span>
+</container>
