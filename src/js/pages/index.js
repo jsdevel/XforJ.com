@@ -6,7 +6,7 @@ var defaultValue="people.cousins.show({\n\
     {\n\
       name:\"Bill\",\n\
       hobbies:[\n\
-         \"fishing\",\n\
+         \"<script>alert('I\'ll be escaped!! Yippeeeeeee')</script>\",\n\
          \"sports\"\n\
       ]\n\
     },\n\
