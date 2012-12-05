@@ -19,7 +19,7 @@
          {foreach current().cousins}
             {sort name asc|in}
 
-            <h2>Cousin #{position()}: {name}</h2>
+            <h2>Cousin \#{position()}: {name}</h2>
             {if hobbies}
             <ul>
                {foreach hobbies}
