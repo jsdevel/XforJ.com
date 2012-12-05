@@ -26,17 +26,28 @@
 
    <target name="default" depends="buildAll"/>
 
+
+   <!--=================================================
+                     BUILD
+   ==================================================-->
    <target name="buildAll" depends="buildXforJFiles, buildHTMLPages, buildCSSFiles, buildJSFiles"/>
 
    <target name="buildXforJFiles" depends="cleanXforJFiles">
-      <!-- build the global template -->
       <XforJ
          destdir="${xforj.build.dir}"
-         escapexss="false"
          srcdir="${xforj.dir}"
          overwrite="true"
       >
-         <fileset dir="${xforj.dir}" includes="**/*.xforj"/>
+         <fileset dir="${xforj.dir}" includes="**/*.xforj" excludes="test_using_external_lib.xforj"/>
+      </XforJ>
+
+      <XforJ
+         destdir="${xforj.build.dir}"
+         srcdir="${xforj.dir}"
+         overwrite="true"
+         useexternal="true"
+      >
+         <fileset dir="${xforj.dir}" includes="test_using_external_lib.xforj"/>
       </XforJ>
    </target>
 
